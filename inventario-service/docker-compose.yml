@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: panaderia-postgres
+    environment:
+      POSTGRES_DB: panaderia
+      POSTGRES_USER: panaderia
+      POSTGRES_PASSWORD: panaderia
+    ports:
+      - "5432:5432"
+    volumes:
+      - panaderia-postgres-data:/var/lib/postgresql/data
+
+volumes:
+  panaderia-postgres-data:
