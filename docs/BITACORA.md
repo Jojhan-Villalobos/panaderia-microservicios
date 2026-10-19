@@ -148,7 +148,14 @@ git push -u origin main
 | 2 leches + 6 huevos: ¿cuántos registros? | Correcta | 1 venta, 2 detalles, 2 movimientos (uno por renglón, no por unidad) |
 
 ### Pendiente
-- [ ] Crear `docs/requisitos.md` y hacer commit.
-- [ ] Crear `docs/modelo-datos.md` (diagrama Mermaid) y hacer commit.
-- [ ] Responder las 3 preguntas del modelo de datos.
+- [x] Crear `docs/requisitos.md` y hacer commit.
+- [x] Crear `docs/modelo-datos.md` (diagrama Mermaid) y hacer commit.
+- [x] Responder las 3 preguntas del modelo de datos.
 - [ ] Reorganizar issues y tablero con el plan de 4 semanas.
+
+### Resumen de cierre — Sesión 1
+- **Construido:** repo `panaderia-microservicios` en GitHub con 4 commits, `.gitignore`, `README.md`, `docs/requisitos.md`, `docs/modelo-datos.md` (diagrama Mermaid), esta bitácora, tablero Kanban e issues.
+- **Comandos nuevos:** `mkdir`, `cd /d`, `dir /a`, `rmdir`, `robocopy`, `move`, `notepad`, `REM`/`::`, `git init/status/add/commit/log/remote/push/diff`.
+- **Conceptos:** Git (bodega → muelle → camión → despacho), rutas absolutas vs relativas, Conventional Commits, microservicios vs monolito, Scrum vs Kanban, requisitos, MVP, mínimo privilegio, modelo de datos (PK, FK, 1:N, N:M), snapshot de precio, kárdex, `NUMERIC`/`BigDecimal`, borrado lógico, integridad referencial.
+- **Términos en inglés nuevos al final:** `snapshot` (foto/instantánea de un dato), `REM` (remark: comentario en CMD), integridad referencial (*referential integrity*).
+- **Siguiente sesión (Día 3):** Java POO — convertir el modelo en clases Java (`Producto`, `Venta`, `DetalleVenta`) con encapsulamiento y `BigDecimal`.
