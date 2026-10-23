@@ -159,3 +159,63 @@ git push -u origin main
 - **Conceptos:** Git (bodega → muelle → camión → despacho), rutas absolutas vs relativas, Conventional Commits, microservicios vs monolito, Scrum vs Kanban, requisitos, MVP, mínimo privilegio, modelo de datos (PK, FK, 1:N, N:M), snapshot de precio, kárdex, `NUMERIC`/`BigDecimal`, borrado lógico, integridad referencial.
 - **Términos en inglés nuevos al final:** `snapshot` (foto/instantánea de un dato), `REM` (remark: comentario en CMD), integridad referencial (*referential integrity*).
 - **Siguiente sesión (Día 3):** Java POO — convertir el modelo en clases Java (`Producto`, `Venta`, `DetalleVenta`) con encapsulamiento y `BigDecimal`.
+
+---
+
+## Sesión 2 — lunes 19 de octubre de 2026 (Día 3: Java POO)
+
+### Lo construido
+- Rama `feat/modelo-producto` (Trunk Based: ramas cortas, `main` siempre estable).
+- Paquete `com.panaderia.inventario` con `TipoProducto` (enum) y `Producto` (clase encapsulada).
+- Regla nueva escrita por Jojhan: **no se puede vender un producto desactivado** (`if (!this.activo)` → `IllegalStateException`, antes de modificar el stock).
+
+### Comandos nuevos
+```bat
+:: Crear una rama y pasarse a ella (switch = cambiar, -c = create)
+git switch -c feat/modelo-producto
+:: Descartar cambios de UN archivo y volverlo al último commit
+git restore ruta\al\archivo
+```
+
+### Configuración de IntelliJ
+- "Project JDK is not defined" → **Setup SDK** → temurin-17.
+- Carpeta `java` gris (sin New → Package) → clic derecho en `pom.xml` → **Add as Maven Project** → `src/main/java` azul, `src/test/java` verde.
+- "Add File to Git" → Cancel + Don't ask again (el `git add` se hace en la terminal).
+
+### Conceptos clave
+- **Clase vs objeto:** molde vs ficha llena.
+- **Encapsulamiento:** atributos `private`, cambios solo por métodos que validan (sin `setStock`).
+- **enum:** lista cerrada de valores (`REVENTA`, `ELABORADO`).
+- **Declarar vs llamar un método:** `registrarEntrada(int cantidad)` vs `leche.registrarEntrada(50)`.
+- **IllegalArgumentException** (dato malo) vs **IllegalStateException** (dato válido, estado no lo permite).
+- **Desactivado ≠ sin stock:** son dos reglas independientes.
+- **Guard clauses:** validar primero, modificar después; si algo falla, el objeto queda intacto.
+- **`!`** invierte un boolean: `!false` = `true`.
+- **Prueba de escritorio:** ejecutar a mano línea por línea; un `if` pregunta, no cambia variables; después de `throw` no se ejecuta nada más.
+- **Javadoc:** `/** */`, `@param`, `@throws`.
+
+### Errores y lecciones
+| Error | Lección |
+|---|---|
+| `leche.registrarEntrada(int 50)` | El tipo se escribe al declarar, no al llamar |
+| Regla de desactivado mirando `stock` y cambiando `activo` | Cada regla mira solo su dato; vender no apaga productos |
+| Validación puesta después de `stock -= cantidad` | Validar SIEMPRE antes de modificar |
+| En la prueba de escritorio se anotó el resultado del `if` como valor de `activo` | Columna aparte para "¿Entra?"; solo un `=` cambia variables |
+
+### Términos en inglés
+| Término | Significado |
+|---|---|
+| `package` / `import` | paquete / importar |
+| `public` / `private` | público / privado |
+| `enum` | enumeración (lista cerrada) |
+| `new` / `this` | nuevo (crear objeto) / este objeto |
+| `throw` | lanzar un error |
+| `return` / `void` | devolver / no devuelve nada |
+| getter | método que lee un atributo |
+| `isBlank` / `compareTo` / `subtract` | está en blanco / comparar / restar |
+| JDK (Java Development Kit) | kit de desarrollo de Java |
+| source root | raíz de código fuente |
+| `switch` / `restore` | cambiar de rama / restaurar archivo |
+| guard clause | cláusula de guarda (validar antes de actuar) |
+| desk check | prueba de escritorio |
+| Javadoc / `@param` / `@throws` | documentación / parámetro / lanza |
