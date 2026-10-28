@@ -219,3 +219,64 @@ git restore ruta\al\archivo
 | guard clause | cláusula de guarda (validar antes de actuar) |
 | desk check | prueba de escritorio |
 | Javadoc / `@param` / `@throws` | documentación / parámetro / lanza |
+
+### Pruebas con JUnit 5 (escritas por Jojhan) — 20 al 23 de octubre
+- `ProductoTest`: **6 tests passed**.
+- Patrón: Preparar → Actuar → Verificar (Arrange, Act, Assert). La prueba es el **inspector**: llama al método real, nunca reescribe la regla con `if`/`throw`.
+- `assertEquals(esperado, real)`, `assertTrue/assertFalse`, `assertThrows(Tipo.class, () -> acción)`.
+- La acción que debe fallar va **dentro** de `() ->` (caja cerrada); si se ejecuta afuera, explota antes de que JUnit la atrape.
+- **Falso positivo:** prueba en verde por la razón equivocada (desactivado con stock 0 lo detenía la regla de stock). Solución: preparar con stock y desactivar.
+- **Probar la prueba:** comentar `desactivar()` hizo fallar la prueba ("nothing was thrown") → la prueba sí depende de la regla.
+- `crearLeche()` es la **pesa patrón**: las pruebas cambian cuando cambian las **reglas**, no los **datos**.
+
+### Errores y lecciones (pruebas)
+| Error | Lección |
+|---|---|
+| Reescribir la regla con `if`/`throw` dentro de la prueba | La prueba llama al método real y verifica con `assert...` |
+| `descontarStock(0)` esperaba `IllegalStateException` | Leer `Caused by:`: el 0 lo atrapó la regla 1 (dato malo). Una prueba = una regla |
+| `leche.margen();` sin guardar el resultado | Un valor de retorno se guarda (`BigDecimal m = leche.margen();`) o se usa directo |
+| `leche.margen() = ...` | El `=` asigna de derecha a izquierda: a la izquierda va la variable |
+| Esperado 4500 en vez de 900 | Leer `Expected`/`Actual` y decidir cuál es el correcto según el negocio |
+| Cambiar `crearLeche()` a precio 0 y aceptar el 💡 que agregó un parámetro a `getPrecioVenta` | No tocar la pesa patrón; no aceptar correcciones automáticas sin entenderlas; los getters solo leen |
+| `() -> !leche.isActivo()` | Dentro de `assertThrows` va la acción (vender), no una pregunta |
+| `new String("...")` | El texto entre comillas ya es un `String` |
+
+### Git: cierre del día 3
+```bat
+git add .gitignore
+git commit -m "chore: ignorar carpeta .ollamassist del IDE"
+git add inventario-service/src/main/java/com/panaderia/inventario/
+git commit -m "feat: modelo Producto con reglas de stock y producto desactivado"
+git add inventario-service/src/test/java/com/panaderia/inventario/
+git commit -m "test: pruebas unitarias de Producto con JUnit 5"
+:: volver a main
+git switch main
+:: fast-forward: main avanza hasta la rama
+git merge feat/modelo-producto
+:: 55117df..21e4cae main -> main
+git push
+:: -d solo borra ramas ya fusionadas
+git branch -d feat/modelo-producto
+:: HEAD -> main, origin/main en el mismo commit
+git log --oneline -3
+```
+- Etiquetas de `git log`: `HEAD` = dónde estás; `main` = rama local; `origin/main` = GitHub.
+- En CMD los comentarios `::` van SOLOS en su línea (después de un comando se tratan como parte del comando).
+- El CMD abierto **como Administrador** arranca en `C:\Windows\System32`: abrir CMD normal y hacer `cd /d` al proyecto.
+
+### Términos en inglés (pruebas y Git)
+| Término | Significado |
+|---|---|
+| assertion | aserción, afirmación verificable |
+| expected / actual | esperado / real |
+| nothing was thrown | no se lanzó ningún error |
+| Caused by | causado por (la pista clave del error) |
+| false positive | falso positivo |
+| return value | valor de retorno |
+| merge | fusionar ramas |
+| fast-forward | avance rápido (mover la rama sin crear commit nuevo) |
+| HEAD | dónde estás parado en el historial |
+
+### Resumen de cierre — Sesión 2 (Día 3)
+- **Construido:** `TipoProducto`, `Producto` (encapsulado, 3 reglas en `descontarStock`), `ProductoTest` (6 pruebas, 5 escritas por Jojhan), fusionado en `main` y subido a GitHub (`21e4cae`).
+- **Siguiente (Día 4):** colecciones y excepciones propias — `Venta` y `DetalleVenta` (un carrito con varios renglones), `StockInsuficienteException`.
